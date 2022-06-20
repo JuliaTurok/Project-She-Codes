@@ -16,38 +16,61 @@ if (minutes < 10) {
 }
 document.getElementById("h2").innerHTML = `${day}, ${hours}:${minutes}`;
 
-function search(event) {
+function showTemperature(response) {
+  let temperatureElement = document.querySelector("#temperature");
+  let cityElement = document.querySelector("#city");
+  let descriptionElement = document.querySelector("#description");
+  let humidityElement = document.querySelector("#humidity");
+  let windElement = document.querySelector("#wind");
+  let iconElement = document.querySelector("#icon");
+
+  celsiusTemperature = response.data.main.temp;
+
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
+  cityElement.innerHTML = response.data.name;
+  descriptionElement.innerHTML = response.data.weather[0].description;
+  humidityElement.innerHTML = response.data.main.humidity;
+  windElement.innerHTML = Math.round(response.data.wind.speed);
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
+}
+
+function showFahrenheitTemperature(event) {
   event.preventDefault();
-  let searchInput = document.querySelector("#text-input");
-
-  let city = document.querySelector("#city");
-  if (searchInput.value) {
-    city.innerHTML = `${searchInput.value}`;
-  } else {
-    city.innerHTML = null;
-  }
+  temperatureElement = document.querySelector("#temperature");
+  celsius.classList.remove("active");
+  fahrenheit.classList.add("active");
+  let fahrenheitTemperature = (celsiusTemperature * 9) / 5 + 32;
+  temperatureElement.innerHTML = Math.round(fahrenheitTemperature);
 }
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", search);
-
-function showTemp(response) {
-  let cityName = response.data.name;
-  let city = document.querySelector("#city");
-  city.innerHTML = cityName;
-  let temp = Math.round(response.data.main.temp);
-  let temperature = document.querySelector("#temperature");
-  temperature.innerHTML = `${temp}°C`;
+function showCelsiusTemperature(event) {
+  event.preventDefault();
+  celsius.classList.add("active");
+  fahrenheit.classList.remove("active");
+  let temperatureElement = document.querySelector("#temperature");
+  temperatureElement.innerHTML = Math.round(celsiusTemperature);
 }
-function searchCity(city) {
+
+function search(city) {
   let apiKey = "914cbf8aca52842e5866dd42da649610";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-  axios.get(apiUrl).then(showTemp);
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showTemperature);
 }
+
 function submit(event) {
   event.preventDefault();
-  let city = document.querySelector("#text-input").value;
-  searchCity(city);
+  let searchInput = document.querySelector("#text-input");
+  search(searchInput.value);
 }
+let fahrenheit = document.querySelector("#fahrenheit");
+fahrenheit.addEventListener("click", showFahrenheitTemperature);
 
-form = document.querySelector("#search-form");
-form.addEventListener("submit", submit, search);
+let celsius = document.querySelector("#celsius");
+celsius.addEventListener("click", showCelsiusTemperature);
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", submit);
+search("Lviv");

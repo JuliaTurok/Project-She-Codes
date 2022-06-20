@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  width: 43%;
+  width: 40%;
   margin: 0 auto;
   top: 50px;
   border: 2px solid #9fc6ec;
@@ -8,6 +8,7 @@
   padding-right: 0;
   border-radius: 10px;
   align-items: center;
+  box-sizing: border-box;
 }
 form :nth-child(1) {
   border: 2px solid #9fc6ec;
@@ -17,9 +18,7 @@ form :nth-child(1) {
   width: 30%;
   border-radius: 20px;
 }
-a {
-  text-decoration: none;
-}
+
 form :nth-child(2) {
   border: 2px solid rgba(159, 198, 236);
   padding: 10px 20px;
@@ -30,6 +29,9 @@ form :nth-child(2):hover {
   background-color: rgba(0, 255, 255, 0.25);
 
   cursor: pointer;
+}
+input[type="text"] {
+  width: 165px;
 }
 .city-box {
   display: flex;
@@ -42,7 +44,7 @@ form :nth-child(2):hover {
   color: grey;
 }
 #city {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 500;
 }
 .city-container {
@@ -52,8 +54,22 @@ form :nth-child(2):hover {
 #temperature {
   font-size: 30px;
   font-weight: 500;
-  padding-top: 13px;
-  margin-left: 40px;
+  padding-top: 7px;
+  margin-left: 20px;
+}
+.units {
+  font-size: 30px;
+  font-weight: 400;
+  padding-top: 7px;
+  margin-left: 5px;
+}
+.units :nth-child(2) {
+  margin-left: 5px;
+}
+.active {
+  color: rgb(33, 33, 33);
+  cursor: default;
+  text-decoration: none;
 }
 section {
   display: flex;
@@ -69,41 +85,34 @@ section {
 .text :nth-child(2) {
   margin-top: 5px;
 }
-.weather > svg {
+.weather > img {
   width: 200px;
   position: absolute;
-  left: 370px;
-  bottom: 185px;
+  left: 350px;
+  bottom: 55px;
 }
 .box {
   display: flex;
   margin-top: 70px;
 }
-.days {
-  border: 2px solid #9fc6ec;
-  padding: 15px;
-  border-radius: 5px;
-  margin-right: 30px;
-  box-sizing: border-box;
-  font-family: "Josefin Sans", sans-serif;
-  padding-bottom: 20px;
-}
-.days :nth-child(1) {
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.days:hover {
-  background-color: rgba(0, 255, 255, 0.25);
-}
+
 .info {
   display: flex;
 }
 .info :nth-child(2) {
   padding-top: 5px;
-  padding-left: 5px;
+  padding-left: 7px;
 }
-.link{
+.link {
   text-align: center;
   margin-top: 75px;
+}
+
+#humidity {
+  margin-left: 10px;
+}
+#description {
+  position: absolute;
+  left: 420px;
+  bottom: 55px;
 }
