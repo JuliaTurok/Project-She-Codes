@@ -16,6 +16,8 @@ if (minutes < 10) {
 }
 document.getElementById("h2").innerHTML = `${day}, ${hours}:${minutes}`;
 
+
+
 function showTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
@@ -36,6 +38,7 @@ function showTemperature(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
+  showCoord(response.data.coord);
 }
 
 function showFahrenheitTemperature(event) {
@@ -65,6 +68,46 @@ function submit(event) {
   let searchInput = document.querySelector("#text-input");
   search(searchInput.value);
 }
+function getDay(timestamp){
+let date = new Date(timestamp * 1000);
+let day = date.getDay();
+let days = ["Sun","Mon","Tue","Wed","Thu"]
+return days[day];
+}
+function showCoord(coordinates) {
+  let lat= coordinates.lat;
+  let lon= coordinates.lon;
+  let apiKey = `914cbf8aca52842e5866dd42da649610`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showForecast);
+}
+function showForecast(response){
+let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = `<div class="box">`;
+  
+forecast.forEach(function (forecastDay, index) {
+  if(index < 5){
+    forecastHTML =
+      forecastHTML +
+      `<div class="days">
+          <div>${getDay(forecastDay.dt)}</div>
+            <div class="icon"> <img
+            src=" http://openweathermap.org/img/wn/${
+              forecastDay.weather[0].icon
+            }@2x.png"
+            alt="weather"
+          /></div>
+             <div class="info">
+            <span class="max-temp">${Math.round(forecastDay.temp.max)}°C</span>
+            <span class="min-temp">${Math.round(forecastDay.temp.min)}°C</span>
+          </div>
+        </div>`;
+  }
+  });
+        forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
 let fahrenheit = document.querySelector("#fahrenheit");
 fahrenheit.addEventListener("click", showFahrenheitTemperature);
 
@@ -74,3 +117,4 @@ celsius.addEventListener("click", showCelsiusTemperature);
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", submit);
 search("Lviv");
+ celsius.classList.add("active");
